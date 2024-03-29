@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  mongo:
+    container_name: "instacarro_mogodb"
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: instacarro
+    networks:
+      - "instacarro_network"
+    ports:
+      - 27017:27017
+    volumes:
+      - ./.docker/mongodb:/data/db
+
+volumes:
+  instacarro_app:
+    driver: local
+
+networks:
+  instacarro_network:
+    driver: bridge
