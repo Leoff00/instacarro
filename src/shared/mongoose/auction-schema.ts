@@ -1,22 +1,29 @@
 import mongoose, { Document, Schema } from "mongoose";
-import { UserInterfaceDoc } from "./user-schema";
-import { CarInterfaceDoc } from "./car-schema";
+import { Car } from "../../entity/Car";
+import { User } from "../../entity/User";
 
-type Bidders = { name: string; lastname: string };
+type Bidder = { name: string; lastname: string; offer: Number; email: string };
 
-const Bidder = new Schema<Bidders>({
+const Bidders = new Schema<Bidder>({
   name: { type: String },
   lastname: { type: String },
+  offer: { type: Number },
+  email: { type: String, unique: true },
 });
 
 export interface AuctionInterfaceDoc extends Document {
   bid: number;
-  bidders: Array<Bidders>;
+  bidders: Array<{
+    name: string;
+    lastname: string;
+    offer: number;
+    email: string;
+  }>;
   currentOffer: number;
   minOffer: number;
   maxOffer: number;
-  car: CarInterfaceDoc["_id"];
-  user: UserInterfaceDoc["_id"];
+  car: Car;
+  user: User;
   startDate: Date;
   endDate: Date;
 }
@@ -26,9 +33,9 @@ export const AuctionSchema = new Schema<AuctionInterfaceDoc>({
   currentOffer: { type: Number },
   minOffer: { type: Number },
   maxOffer: { type: Number },
-  car: { type: Schema.Types.ObjectId, ref: "Car", required: true },
-  user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-  bidders: { type: [Bidder] },
+  car: { type: Object, ref: "Car", required: true },
+  user: { type: Object, ref: "User", required: true },
+  bidders: [Bidders],
   startDate: { type: Date, required: true },
   endDate: { type: Date, required: true },
 });

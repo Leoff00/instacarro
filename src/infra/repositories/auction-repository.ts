@@ -6,6 +6,13 @@ import {
   AuctionModel,
 } from "../../shared/mongoose/auction-schema";
 
+type Bidder = {
+  name: string;
+  lastname: string;
+  offer: number;
+  email: string;
+};
+
 export class MongoAuctionRepository extends AuctionRepository {
   readonly #repository: Model<AuctionInterfaceDoc> = AuctionModel;
 
@@ -13,12 +20,33 @@ export class MongoAuctionRepository extends AuctionRepository {
     await this.#repository.create(a);
   }
 
+  async findByPlate(licensePlate: string): Promise<Auction | null> {
+    const found = await this.#repository.findOne({
+      "car.licensePlate": licensePlate,
+    });
+    if (!found) return null;
+
+    const toDomain = new Auction(
+      found.currentOffer,
+      found.minOffer,
+      found.maxOffer,
+      found.car,
+      found.user,
+      found.startDate,
+      found.endDate,
+      found.bidders,
+      found.id
+    );
+
+    return toDomain;
+  }
+
   async findById(id: string): Promise<Auction | null> {
     const found = await this.#repository.findById(id);
 
     if (!found) return null;
 
-    const map = new Auction(
+    const toDomain = new Auction(
       found.currentOffer,
       found.minOffer,
       found.maxOffer,
@@ -30,28 +58,40 @@ export class MongoAuctionRepository extends AuctionRepository {
       found.id
     );
 
-    return map;
+    return toDomain;
   }
 
-  async submitBid(currentOffer: number, licensePlate: string): Promise<void> {
-    const found = await this.#repository.findOne({
-      "car.licensePlate": licensePlate,
-    });
-
-    if (!found) return;
-
-    found.currentOffer = currentOffer;
-    await this.#repository.updateOne({ id: found.id });
-  }
-
-  async listVehicleBids(licensePlate: string): Promise<Auction | null> {
+  async submitBid(
+    bidder: Bidder,
+    licensePlate: string
+  ): Promise<number | null> {
     const found = await this.#repository.findOne({
       "car.licensePlate": licensePlate,
     });
 
     if (!found) return null;
 
-    const map = new Auction(
+    found.bid++;
+    found.bidders.push(bidder);
+
+    await this.#repository.updateOne({
+      $push: { bidders: found.bidders },
+      bid: found.bid,
+    });
+
+    return found.bid;
+  }
+
+  async listVehicleBids(
+    licensePlate: string
+  ): Promise<{ auction: Auction; bid: number } | null> {
+    const found = await this.#repository.findOne({
+      "car.licensePlate": licensePlate,
+    });
+
+    if (!found) return null;
+
+    const toDomain = new Auction(
       found.currentOffer,
       found.minOffer,
       found.maxOffer,
@@ -63,7 +103,10 @@ export class MongoAuctionRepository extends AuctionRepository {
       found.id
     );
 
-    return map;
+    return {
+      auction: toDomain,
+      bid: found.bid,
+    };
   }
 
   async delete(licensePlate: string): Promise<void> {
@@ -71,8 +114,9 @@ export class MongoAuctionRepository extends AuctionRepository {
       "car.licensePlate": licensePlate,
     });
 
+    console.log(found);
     if (!found) return;
 
-    await this.#repository.deleteOne({ id: found.id });
+    await this.#repository.deleteOne({ "car.licensePlate": licensePlate });
   }
 }

@@ -12,9 +12,11 @@ export class LoginController {
     const token = await authUserUseCase.execute(name, email);
 
     if (!token) {
-      return response.status(498).json("Invalid Token");
+      return response
+        .status(498)
+        .json({ statusCode: 498, message: "Invalid Token" });
     }
 
-    return response.json({ token });
+    return response.status(200).json({ statusCode: 200, message: token });
   }
 }

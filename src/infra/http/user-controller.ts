@@ -8,5 +8,9 @@ export class UserController {
     const body = request.body as CreateUserBody;
     const createUserUseCase = userContainer.resolve<CreateUser>("createUser");
     await createUserUseCase.execute(body);
+
+    return response
+      .status(201)
+      .json({ statusCode: 201, message: "User created" });
   }
 }

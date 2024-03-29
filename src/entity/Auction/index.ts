@@ -2,7 +2,12 @@ import crypto from "node:crypto";
 import { Car } from "../Car";
 import { User } from "../User";
 
-type Bidders = Array<{ name: string; lastname: string }>;
+type Bidders = Array<{
+  name: string;
+  lastname: string;
+  offer: number;
+  email: string;
+}>;
 
 export class Auction {
   private bids: number = 0;
@@ -39,7 +44,8 @@ export class Auction {
   }
 
   public hasFinishedAuction(): boolean {
-    if (this.currentOffer >= this.maxOffer) return true;
+    const match = this.bidders?.some((bid) => bid.offer === this.maxOffer)!;
+    return match;
   }
 
   public hasReachedDeadline(): boolean {

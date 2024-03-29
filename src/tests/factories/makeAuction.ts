@@ -1,4 +1,3 @@
-import crypto from "node:crypto";
 import { Auction } from "../../entity/Auction";
 import { makeCar, makeUser } from ".";
 
@@ -14,8 +13,8 @@ export function makeAuction(opts: Partial<Auction> = {}): Auction {
     opts.startDate || new Date(),
     opts.endDate || new Date(),
     opts.bidders || [
-      { name: "John", lastname: "Doe" },
-      { name: "Mary", lastname: "Ann" },
+      { name: "John", lastname: "Doe", offer: 500 },
+      { name: "Mary", lastname: "Ann", offer: 500 },
     ]
   );
 }

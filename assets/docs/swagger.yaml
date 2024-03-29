@@ -1,0 +1,284 @@
+    openapi: 3.0.0
+    info:
+      title: Instacarro API
+      description: API de simulação de leilão de automóveis
+      contact:
+        name: Leonardo Ferreira
+      version: 0.1.9
+    tags:
+      - name: User
+      - name: Car
+      - name: Auction
+    servers:
+      - url: http://localhost:3001/api/v1
+        description: URL de conexão dentro do container docker
+    paths:
+      /api/v1/user/create:
+        post:
+          tags:
+            - "User"
+          requestBody: 
+            content:
+              application/json:
+                schema: 
+                  $ref: "#/components/schemas/createUserRequest"
+          summary: Rota para criação de usuário.
+          description: Criação de usuário no banco.
+          responses:
+            '201':   
+              description: Response with no content
+              content:
+                application/json:
+                  schema: 
+                    example: ""      
+      /api/v1/user/login:
+        post:
+          tags:
+            - "User"
+          requestBody: 
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    name: 
+                      type: string
+                      example: John
+                    email:
+                      type: string
+                      example: john.doe@example.com
+          summary: Rota para criação de usuário.
+          description: Criação de usuário no banco.
+          responses:
+            '201':   
+              description: Response sem conteudo.
+              content:
+                application/json:
+                  schema: 
+                    example: "token"
+      /api/v1/car/create:
+        post:
+          tags:
+            - "Car"
+          requestBody:
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/createCarRequest"
+          summary: "Rota para criação de carros."
+          description: "Criação de carros para leiloar."
+          responses:
+            '201':   
+              description: Response sem conteudo.
+              content:
+                application/json:
+                  schema: 
+                    example: ""
+      /api/v1/auction/create:
+        post:
+          tags:
+            - "Auction"
+          requestBody:
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/createAuctionRequest"
+          responses:
+            '201':
+              description: Response sem conteudo.
+              content:
+                application/json:
+                  schema:
+                    example: ""
+      /api/v1/auction/list/{licensePlate}:
+        get:
+          tags:
+            - "Auction"
+          parameters:
+            - in: path
+              name: licensePlate
+              required: true
+              schema: 
+                type: string
+                example: ABC1234
+          responses:
+            '200':
+              description: Response sem conteudo.
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                      bid:
+                        type: number
+                        example: 5
+                      totalSum:
+                        type: number
+                        example: 10000
+                      bidders:
+                        type: array
+                        items:
+                          allOf:
+                          - $ref: "#/components/schemas/bidder"
+                      
+
+      /api/v1/auction/bid/{licensePlate}:
+        put:
+          tags:
+            - "Auction"
+          requestBody:
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/bidder"
+          responses:
+            '200':
+              description: Response sem conteudo.
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                      bid:
+                        type: number
+                        example: 5
+      /api/v1/auction/finish/{licensePlate}:
+        delete:
+          tags:
+            - "Auction"
+          parameters:
+            - in: path
+              name: licensePlate
+              required: true
+              schema: 
+                type: string
+                example: ABC1234
+          responses:
+            '200':
+              description: Response sem conteudo.
+              content:
+                application/json:
+                  schema:
+                    $ref: "#components/schemas/winner"
+
+    components:
+      schemas:
+        createUserRequest:
+          description: "Criar um usuario"
+          type: object
+          required:
+          - name
+          - lastname
+          - email
+          properties:
+            name:
+              type: string
+              example: John
+            lastname:
+              type: string
+              example: Doe
+            email:
+              type: string
+              example: john.doe@example.com
+        createCarRequest:
+          description: "Criar um carro"
+          type: object
+          required:
+          - carModel
+          - licensePlate
+          - name
+          - manufacture
+          - price
+          properties:
+            carModel:
+              type: string
+              example: Sedan 
+            licensePlate:
+              type: string
+              example: ABC1234
+            name:
+              type: string
+              example: Honda Civic
+            manufacture:
+              type: string
+              example: Honda
+            price:
+              type: number
+              example: 30000
+    
+        createAuctionRequest:
+          description: "Criar um leilao"
+          type: object
+          required:
+           - email
+           - licensePlate
+           - maxOffer
+           - minOffer
+           - startDate
+           - endDate
+          properties:
+            email:
+              type: string
+              example: john.doe@example.com
+            licensePlate:
+              type: string
+              example: ABC1234
+            maxOffer:
+              type: number
+              example: 25000
+            minOffer:
+              type: number
+              example: 200
+            startDate:
+              type: string
+              example: "01/01/2024"
+            endDate:
+              type: string
+              example: "01/02/2024"
+        bidder:
+            description: "Licitador"
+            type: object
+            properties:
+              bidder:
+                type: object
+                required:
+                - name
+                - lastname
+                - offer
+                - email
+                properties:
+                  name:
+                    type: string
+                    example: John
+                  lastname:
+                    type: string
+                    example: Doe
+                  offer:
+                    type: number
+                    example: 10000
+                  email:
+                    type: string
+                    example: john.doe@example.com
+        winner:
+          description: ganhador
+          type: object
+          properties:
+            winner:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: john
+                lastname:
+                  type: string
+                  example: doe
+                offer:
+                  type: number
+                  example: 50000
+                email:
+                  type: string
+                  example: john.doe@example.com
+                _id:
+                  type: string
+                  example: 6607346e8fb9cdd8b525695c
+  

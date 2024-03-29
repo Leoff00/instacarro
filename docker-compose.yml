@@ -1,20 +1,30 @@
 version: "3.9"
-
 services:
   mongo:
-    container_name: "instacarro_mogodb"
+    container_name: "instacarro_mongodb"
     image: mongo
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
-      MONGO_INITDB_DATABASE: instacarro
+      MONGO_INITDB_ROOT_PASSWORD: password
     networks:
       - "instacarro_network"
     ports:
       - 27017:27017
     volumes:
-      - ./.docker/mongodb:/data/db
+      - ./data/mongodb:/data/db
+
+  instacarro:
+    container_name: "instacarro_app"
+    build:
+      context: .
+      dockerfile: dockerfile
+    restart: always
+    depends_on: [mongo]
+    networks:
+      - "instacarro_network"
+    ports:
+      - 3001:3001
 
 volumes:
   instacarro_app:

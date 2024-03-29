@@ -5,14 +5,21 @@ export class User {
   name: string;
   lastname: string;
   email: string;
-  createdAt: Date;
+  createdAt?: Date;
   updatedAt?: Date;
 
-  constructor(name: string, lastname: string, email: string, id?: string) {
+  constructor(
+    name: string,
+    lastname: string,
+    email: string,
+    createdAt?: Date,
+    id?: string
+  ) {
     this.id = id ?? crypto.randomUUID();
     this.name = name;
     this.lastname = lastname;
     this.email = email;
+    this.createdAt = createdAt;
   }
 
   public validateEmailFormat(): boolean {

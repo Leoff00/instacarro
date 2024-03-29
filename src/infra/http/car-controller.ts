@@ -8,5 +8,9 @@ export class CarController {
     const body = request.body as CreateCarBody;
     const createCarUseCase = carContainer.resolve<CreateCar>("CreateCar");
     await createCarUseCase.execute(body);
+
+    return response
+      .status(201)
+      .json({ statusCode: 201, message: "Car registered" });
   }
 }

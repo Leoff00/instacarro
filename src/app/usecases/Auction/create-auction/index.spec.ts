@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { beforeEach, describe, expect, test, vitest } from "vitest";
 import { CreateAuction } from ".";
 import { InMemoAuctionRepo } from "../../../../tests/repositories/in-memo-auction-repo";
@@ -53,7 +54,6 @@ describe("CreateAuction [UseCase]", () => {
 
     await inMemoUserRepo.create(u);
     await inMemoCarRepo.create(c);
-    await inMemoAuctionRepo.create(a);
 
     const findByEmailSpy = vitest.spyOn(inMemoUserRepo, "findByEmail");
     const findByPlateSpy = vitest.spyOn(inMemoCarRepo, "findByPlate");

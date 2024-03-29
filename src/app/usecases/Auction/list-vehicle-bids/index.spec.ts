@@ -12,12 +12,12 @@ describe("ListBidByUser [UseCase]", () => {
   });
 
   test("Should list given bids in vehicle", async () => {
-    const a = makeAuction({});
+    const a = makeAuction();
 
     await inMemoAuctionRepo.create(a);
-    await inMemoAuctionRepo.submitBid(500, a.car.licensePlate);
-    await inMemoAuctionRepo.submitBid(600, a.car.licensePlate);
-    await inMemoAuctionRepo.submitBid(700, a.car.licensePlate);
+    await inMemoAuctionRepo.submitBid(a.bidders![0], a.car.licensePlate);
+    await inMemoAuctionRepo.submitBid(a.bidders![0], a.car.licensePlate);
+    await inMemoAuctionRepo.submitBid(a.bidders![0], a.car.licensePlate);
 
     const result = await sut.execute({
       licensePlate: a.car.licensePlate,

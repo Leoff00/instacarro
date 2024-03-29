@@ -3,7 +3,7 @@ import { InvalidCarPlate } from "../../../../entity/errors/invalid-car-plate";
 import { CarRepository } from "../../../contracts/car-contract";
 
 type Input = {
-  model: string;
+  carModel: string;
   licensePlate: string;
   name: string;
   manufacture: string;
@@ -17,14 +17,14 @@ export class CreateCar {
 
   async execute(input: Input): Promise<Output> {
     const car = new Car(
-      input.model,
+      input.carModel,
       input.licensePlate,
       input.name,
       input.manufacture,
       input.price
     );
 
-    if (car.validateLicensePlate())
+    if (!car.availableCarPlate())
       throw new InvalidCarPlate("Invalid car plate format", 422);
 
     await this.carRepository.create(car);

@@ -1,7 +1,7 @@
 import { app } from "./infra/http/app";
 import { connect } from "./shared/mongoose";
 
-const PORT = 3000;
+const PORT = 3001;
 
 app.listen(PORT, async () => {
   await connect();

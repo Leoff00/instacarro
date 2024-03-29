@@ -12,7 +12,9 @@ export class MongoCarRepository extends CarRepository {
     await this.#repository.create(c);
   }
   async findByPlate(licensePlate: string): Promise<Car | null> {
-    const found = await this.#repository.findOne({ licensePlate });
+    const found = await this.#repository.findOne({
+      licensePlate,
+    });
 
     if (!found) return null;
 

@@ -8,12 +8,15 @@ export interface UserInterfaceDoc extends Document {
   updatedAt?: Date;
 }
 
-const UserSchema = new Schema<UserInterfaceDoc>({
-  name: { type: String, required: true },
-  lastname: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date },
-});
+const UserSchema = new Schema<UserInterfaceDoc>(
+  {
+    name: { type: String, required: true },
+    lastname: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    createdAt: { type: Date },
+    updatedAt: { type: Date, default: null },
+  },
+  { timestamps: { createdAt: true, updatedAt: false } }
+);
 
 export const UserModel = mongoose.model<UserInterfaceDoc>("User", UserSchema);
