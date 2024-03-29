@@ -1,15 +1,13 @@
 import { Model } from "mongoose";
-import { AuctionRepository } from "../../app/contracts/auction-contract";
 import { CarInterfaceDoc, CarModel } from "../../shared/mongoose/car-schema";
-import { Auction } from "../../entity/Auction";
 import { CarRepository } from "../../app/contracts/car-contract";
 import { Car } from "../../entity/Car";
 
 export class MongoCarRepository extends CarRepository {
   readonly #repository: Model<CarInterfaceDoc> = CarModel;
 
-  async create(c: Car): Promise<void> {
-    await this.#repository.create(c);
+  async create(car: Car): Promise<void> {
+    await this.#repository.create(car);
   }
   async findByPlate(licensePlate: string): Promise<Car | null> {
     const found = await this.#repository.findOne({

@@ -60,6 +60,13 @@
         post:
           tags:
             - "Car"
+          parameters:
+            - in: header
+              name: "token"
+              required: true
+              schema: 
+                type: string
+                example: token
           requestBody:
             content:
               application/json:
@@ -78,6 +85,13 @@
         post:
           tags:
             - "Auction"
+          parameters:
+            - in: header
+              name: "token"
+              required: true
+              schema: 
+                type: string
+                example: token
           requestBody:
             content:
               application/json:
@@ -94,6 +108,7 @@
         get:
           tags:
             - "Auction"
+          
           parameters:
             - in: path
               name: licensePlate
@@ -101,6 +116,12 @@
               schema: 
                 type: string
                 example: ABC1234
+            - in: header
+              name: "token"
+              required: true
+              schema: 
+                type: string
+                example: token
           responses:
             '200':
               description: Response sem conteudo.
@@ -120,12 +141,17 @@
                         items:
                           allOf:
                           - $ref: "#/components/schemas/bidder"
-                      
-
       /api/v1/auction/bid/{licensePlate}:
         put:
           tags:
             - "Auction"
+          parameters:
+            - in: header
+              name: "token"
+              required: true
+              schema: 
+                type: string
+                example: token            
           requestBody:
             content:
               application/json:
@@ -146,6 +172,7 @@
         delete:
           tags:
             - "Auction"
+            
           parameters:
             - in: path
               name: licensePlate
@@ -153,6 +180,12 @@
               schema: 
                 type: string
                 example: ABC1234
+            - in: header
+              name: "token"
+              required: true
+              schema: 
+                type: string
+                example: token                
           responses:
             '200':
               description: Response sem conteudo.

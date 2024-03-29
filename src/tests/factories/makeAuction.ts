@@ -13,8 +13,18 @@ export function makeAuction(opts: Partial<Auction> = {}): Auction {
     opts.startDate || new Date(),
     opts.endDate || new Date(),
     opts.bidders || [
-      { name: "John", lastname: "Doe", offer: 500 },
-      { name: "Mary", lastname: "Ann", offer: 500 },
+      {
+        name: "John",
+        lastname: "Doe",
+        offer: 500,
+        email: "john.doe@example.com",
+      },
+      {
+        name: "Mary",
+        lastname: "Ann",
+        offer: 500,
+        email: "mary.ann@example.com",
+      },
     ]
   );
 }

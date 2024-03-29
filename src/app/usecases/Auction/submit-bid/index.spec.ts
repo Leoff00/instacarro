@@ -34,7 +34,6 @@ describe("SubmitBid [UseCase]", () => {
     expect(
       async () =>
         await sut.execute({
-          id: a.id!,
           bidder: {
             email: a.user.email,
             offer: a.bidders![0].offer,
@@ -62,7 +61,6 @@ describe("SubmitBid [UseCase]", () => {
     const findByPlateSpy = vitest.spyOn(inMemoCarRepo, "findByPlate");
 
     const result = await sut.execute({
-      id: a.id!,
       bidder: {
         email: a.user.email,
         offer: 5000,
@@ -95,7 +93,6 @@ describe("SubmitBid [UseCase]", () => {
     expect(
       async () =>
         await sut.execute({
-          id: a.id!,
           bidder: {
             email: a.user.email,
             offer: 150,

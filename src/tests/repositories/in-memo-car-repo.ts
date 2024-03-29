@@ -7,13 +7,14 @@ export class InMemoCarRepo implements CarRepository {
   get car() {
     return this.cars;
   }
-  async create(c: Car): Promise<void> {
-    await this.car.push(c);
+  async create(car: Car): Promise<void> {
+    await this.car.push(car);
   }
-  async findByPlate(licensePlate: string): Promise<Car> {
+  async findByPlate(licensePlate: string): Promise<Car | null> {
     const found = await this.cars.find(
       (car) => car.licensePlate === licensePlate
     );
+    if (!found) return null;
     return found;
   }
 }

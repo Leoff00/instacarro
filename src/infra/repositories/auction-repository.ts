@@ -16,8 +16,8 @@ type Bidder = {
 export class MongoAuctionRepository extends AuctionRepository {
   readonly #repository: Model<AuctionInterfaceDoc> = AuctionModel;
 
-  async create(a: Auction): Promise<void> {
-    await this.#repository.create(a);
+  async create(auction: Auction): Promise<void> {
+    await this.#repository.create(auction);
   }
 
   async findByPlate(licensePlate: string): Promise<Auction | null> {
@@ -114,7 +114,6 @@ export class MongoAuctionRepository extends AuctionRepository {
       "car.licensePlate": licensePlate,
     });
 
-    console.log(found);
     if (!found) return;
 
     await this.#repository.deleteOne({ "car.licensePlate": licensePlate });

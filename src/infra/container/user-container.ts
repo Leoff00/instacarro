@@ -1,4 +1,3 @@
-import { UserRepository } from "../../app/contracts/user-contract";
 import { CreateUser } from "../../app/usecases/User/create-user";
 import { AuthUser } from "../../app/usecases/User/user-auth";
 import { MongoUserRepository } from "../repositories/user-repository";

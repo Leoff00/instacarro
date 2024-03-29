@@ -8,11 +8,12 @@ export class InMemoUserRepo implements UserRepository {
     return this.users;
   }
 
-  async create(c: User): Promise<void> {
-    await this.users.push(c);
+  async create(user: User): Promise<void> {
+    await this.users.push(user);
   }
-  async findByEmail(email: string): Promise<User> {
+  async findByEmail(email: string): Promise<User | null> {
     const found = await this.users.find((user) => user.email === email);
+    if (!found) return null;
     return found;
   }
 }

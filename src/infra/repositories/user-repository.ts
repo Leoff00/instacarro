@@ -6,8 +6,8 @@ import { UserInterfaceDoc, UserModel } from "../../shared/mongoose/user-schema";
 export class MongoUserRepository extends UserRepository {
   readonly #repository: Model<UserInterfaceDoc> = UserModel;
 
-  async create(c: User): Promise<void> {
-    await this.#repository.create(c);
+  async create(user: User): Promise<void> {
+    await this.#repository.create(user);
   }
   async findByEmail(email: string): Promise<User | null> {
     const found = await this.#repository.findOne({ email });

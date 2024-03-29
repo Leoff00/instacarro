@@ -14,7 +14,7 @@ export type BidOutput = {
 };
 
 export abstract class AuctionRepository {
-  abstract create(a: Auction): Promise<void>;
+  abstract create(auction: Auction): Promise<void>;
   abstract submitBid(
     bidder: Bidder,
     licensePlate: string
