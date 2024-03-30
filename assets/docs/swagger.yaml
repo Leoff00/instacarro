@@ -198,7 +198,7 @@
               content:
                 application/json:
                   schema:
-                    $ref: "#components/schemas/winner"
+                    $ref: "#/components/schemas/winner"
 
     components:
       schemas:
