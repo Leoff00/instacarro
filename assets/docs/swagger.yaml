@@ -47,8 +47,8 @@
                     email:
                       type: string
                       example: john.doe@example.com
-          summary: Rota para criação de usuário.
-          description: Criação de usuário no banco.
+          summary: Rota para login de usuário.
+          description: Acesse esta rota para se autenticar.
           responses:
             '201':   
               description: Response sem conteudo.
@@ -97,6 +97,8 @@
               application/json:
                 schema:
                   $ref: "#/components/schemas/createAuctionRequest"
+          summary: "Rota para criação do leilão."
+          description: "Criação de leilão."            
           responses:
             '201':
               description: Response sem conteudo.
@@ -108,7 +110,6 @@
         get:
           tags:
             - "Auction"
-          
           parameters:
             - in: path
               name: licensePlate
@@ -122,6 +123,8 @@
               schema: 
                 type: string
                 example: token
+          summary: "Rota de listagem de lances."
+          description: "Listar um lance baseado na placa do automóvel."
           responses:
             '200':
               description: Response sem conteudo.
@@ -158,6 +161,8 @@
               schema: 
                 type: string
                 example: token            
+          summary: "Rota para submissão de um lance."
+          description: "Submissão de um lance em um automovel."
           requestBody:
             content:
               application/json:
@@ -191,7 +196,9 @@
               required: true
               schema: 
                 type: string
-                example: token                
+                example: token
+          summary: "Rota para encerramento de um leilão."
+          description: "Encerramento de leilão caso haja um ganhador."                
           responses:
             '200':
               description: Response sem conteudo.
