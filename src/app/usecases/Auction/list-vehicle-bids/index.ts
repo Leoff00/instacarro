@@ -8,7 +8,12 @@ type Input = {
 
 type Output = {
   bids: number;
-  bidders: Array<{ name: string; lastname: string }>;
+  bidders: Array<{
+    name: string;
+    lastname: string;
+    offer: number;
+    email: string;
+  }>;
   totalSum: number;
 };
 

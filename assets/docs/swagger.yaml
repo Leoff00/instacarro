@@ -146,6 +146,12 @@
           tags:
             - "Auction"
           parameters:
+            - in: path
+              name: "licensePlate"
+              required: true
+              schema:
+                type: string
+                example: ABC1234
             - in: header
               name: "token"
               required: true
